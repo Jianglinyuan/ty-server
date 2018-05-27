@@ -19,5 +19,11 @@ module.exports = appInfo => {
     timestamps: false,
   };
 
+  config.cluster = {
+    listen: {
+      port: 9501,
+    },
+  };
+
   return config;
 };
