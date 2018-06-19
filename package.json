@@ -4,6 +4,7 @@
   "description": "",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "egg": "^2.2.1",
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.4",
@@ -32,7 +33,7 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "auto": "sequelize-auto -o './app/models' -d xadmin -h 139.196.79.195 -u root -p 3306 -x Jly921027. -e mysql"
   },
   "ci": {
     "version": "8"
