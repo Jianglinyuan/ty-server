@@ -10,6 +10,7 @@ module.exports = app => {
   router.get('/getClass', controller.class.index);
   router.get('/getVerify', controller.verify.index);
   router.get('/getNews', controller.news.index);
+  router.get('/getAnlis', controller.anlis.index);
   router.get('/login', controller.user.login);
   router.get('/getUser', controller.user.getUser);
   router.get('/user/goodsIsFavorite', controller.user.goodsIsFavorite);
