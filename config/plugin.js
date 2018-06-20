@@ -8,3 +8,4 @@ exports.sequelize = {
   package: 'egg-sequelize',
 }
 ;
+

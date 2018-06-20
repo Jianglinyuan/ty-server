@@ -15,8 +15,81 @@ class AnliCtr extends Controller {
           id,
         },
       });
+      const olCreator = +singleNews.creator;
+      const creator = String(olCreator + 1);
+      await this.ctx.model.Tyanlis.update({ creator }, {
+        where: {
+          id,
+        },
+      });
       this.ctx.body = singleNews;
     }
+  }
+
+  async reviewAnli() {
+    const data = this.ctx.request.body;
+    const singleNews = await this.ctx.model.Tyanlis.findOne({
+      where: {
+        id: data.id,
+      },
+    });
+    singleNews.reviews = JSON.parse(singleNews.reviews);
+    singleNews.reviews.push(data.review);
+    await this.ctx.model.Tyanlis.update({ reviews: JSON.stringify(singleNews.reviews) }, { where: {
+      id: data.id,
+    } });
+
+    this.ctx.body = {
+      code: 0,
+      data: 'success',
+    };
+  }
+
+  async likeAnli() {
+    const { id, openId } = this.ctx.query;
+
+    const user = await this.ctx.model.Tyusers.findOne({
+      where: {
+        uid: openId,
+      },
+    });
+
+    const shoucang = JSON.parse(user.shoucang);
+
+    if (shoucang.anli.find(value => value == id) !== undefined) {
+      this.ctx.body = {
+        code: -1024,
+        status: '已收藏',
+      };
+      return;
+    }
+    shoucang.anli.push(id);
+
+    await this.ctx.model.Tyusers.update({ shoucang: JSON.stringify(shoucang) }, {
+      where: {
+        uid: openId,
+      },
+    });
+
+
+    const singleNews = await this.ctx.model.Tyanlis.findOne({
+      where: {
+        id,
+      },
+    });
+
+    singleNews.ups = +singleNews.ups + 1;
+
+    this.ctx.model.Tyanlis.update({ ups: String(singleNews.ups) }, {
+      where: {
+        id,
+      },
+    });
+
+    this.ctx.body = {
+      code: 0,
+      data: 'success',
+    };
   }
 
 }

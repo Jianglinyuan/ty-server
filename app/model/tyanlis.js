@@ -40,19 +40,11 @@ module.exports = function(app) {
       type: STRING(1024),
       allowNull: true,
     },
-    created_at: {
-      type: STRING(1024),
-      allowNull: true,
-    },
     creator: {
       type: STRING(1024),
       allowNull: true,
     },
     author: {
-      type: STRING(1024),
-      allowNull: true,
-    },
-    updated_at: {
       type: STRING(1024),
       allowNull: true,
     },
