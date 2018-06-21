@@ -24,7 +24,7 @@ module.exports = function(app) {
       allowNull: true,
     },
     yanzhi: {
-      type: STRING(1024),
+      type: INTEGER(10),
       allowNull: true,
     },
     youhuijuan: {

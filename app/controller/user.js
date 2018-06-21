@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const Controller = require('egg').Controller;
-const axios = require('axios');
+const Controller = require("egg").Controller;
+const axios = require("axios");
 
 class UserCtr extends Controller {
   async login() {
@@ -14,39 +14,41 @@ class UserCtr extends Controller {
         where: {
           uid: openID
         }
-      })
+      });
       const result = await this.ctx.model.Tyusers.findOne({
         where: {
           uid: openID
         }
-      })
-      console.log(result)
+      });
+      console.log(result);
       this.ctx.body = result;
       return;
     }
-    const { data } = await axios.get('https://api.weixin.qq.com/sns/jscode2session', {
-      params: {
-        js_code: userCode,
-        appid: 'wxb7cf2ed8b24a06aa',
-        secret: '96900e3c7382eb275fd4a1d5a4d89a7b',
-        grant_type: 'authorization_code',
-      },
-    });
+    const { data } = await axios.get(
+      "https://api.weixin.qq.com/sns/jscode2session",
+      {
+        params: {
+          js_code: userCode,
+          appid: "wxb7cf2ed8b24a06aa",
+          secret: "96900e3c7382eb275fd4a1d5a4d89a7b",
+          grant_type: "authorization_code"
+        }
+      }
+    );
 
     if (!data.errcode) {
       await this.ctx.model.Tyusers.findOrCreate({
         where: {
-          uid: data.openid,
+          uid: data.openid
         },
         defaults: {
-          uid: data.openid,
-        },
+          uid: data.openid
+        }
       });
     }
 
     this.ctx.body = data;
   }
-
 
   async getUser() {
     const { openID } = this.ctx.query;
@@ -54,7 +56,7 @@ class UserCtr extends Controller {
       where: {
         uid: openID
       }
-    })
+    });
     this.ctx.body = result;
   }
 
@@ -64,12 +66,12 @@ class UserCtr extends Controller {
       where: {
         uid: openId
       }
-    })
+    });
     const goods = JSON.parse(result.shoucang);
     this.ctx.body = {
       code: 0,
-      isFavorite: goods.class.find(value => value == classId) !== undefined 
-    }
+      isFavorite: goods.class.find(value => value == classId) !== undefined
+    };
   }
 
   async goodsFavorite() {
@@ -78,24 +80,27 @@ class UserCtr extends Controller {
       where: {
         uid: openId
       }
-    })
+    });
 
     const shoucang = JSON.parse(user.shoucang);
-    
-    if(shoucang.class.find(value => value == classId) !== undefined) {
+
+    if (shoucang.class.find(value => value == classId) !== undefined) {
       this.ctx.body = {
         code: -1024,
         status: "已收藏"
-      }; 
-      return ;
+      };
+      return;
     }
     shoucang.class.push(classId);
 
-    await this.ctx.model.Tyusers.update({ shoucang: JSON.stringify(shoucang) }, {
-      where: {
-        uid: openId
+    await this.ctx.model.Tyusers.update(
+      { shoucang: JSON.stringify(shoucang) },
+      {
+        where: {
+          uid: openId
+        }
       }
-    })
+    );
 
     this.ctx.body = {
       code: 0,
@@ -109,22 +114,60 @@ class UserCtr extends Controller {
       where: {
         uid: openId
       }
-    })
+    });
 
     const shoucang = JSON.parse(user.shoucang);
     const clas = shoucang.class.filter(item => item != classId);
     shoucang.class = clas;
     user.shoucang = shoucang;
 
-    await this.ctx.model.Tyusers.update({ shoucang: JSON.stringify(shoucang) }, {
-      where: {
-        uid: openId
+    await this.ctx.model.Tyusers.update(
+      { shoucang: JSON.stringify(shoucang) },
+      {
+        where: {
+          uid: openId
+        }
       }
-    })
+    );
 
     this.ctx.body = {
       code: 0,
       status: "success"
+    };
+  }
+
+  async modifyYanzhi() {
+    const { openId, number, title } = this.ctx.request.body;
+    const currentUser = await this.ctx.model.Tyusers.findOne({
+      where: {
+        uid: openId
+      }
+    });
+
+    if (!currentUser) {
+      this.ctx.body = {
+        code: -1024,
+        data: "并不存在这个用户"
+      };
+      return;
+    }
+
+    const total = currentUser.yanzhi + number;
+
+    await this.ctx.service.recodeyz.record(openId, title, number, total);
+
+    await this.ctx.model.Tyusers.update(
+      { yanzhi: total },
+      {
+        where: {
+          uid: openId
+        }
+      }
+    );
+
+    this.ctx.body = {
+      code: 0,
+      data: "success"
     };
   }
 }
