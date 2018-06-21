@@ -29,6 +29,7 @@ module.exports = appInfo => {
     csrf: {
       enable: false,
     },
+    domainWhiteList: [ 'http://siyan.tech', 'https://siyan.tech', 'http://photo.siyan.tech' ],
   };
 
   return config;
