@@ -4,8 +4,17 @@ const Controller = require('egg').Controller;
 
 class studentCtr extends Controller {
   async index() {
-    console.log(this.ctx.model);
-    const students = await this.ctx.model.Tystudent.findAll();
+    let students;
+    const { id } = this.ctx.query;
+    if (id) {
+      students = await this.ctx.model.Tystudent.findOne({
+        where: {
+          id,
+        },
+      });
+    } else {
+      students = await this.ctx.model.Tystudent.findAll();
+    }
     this.ctx.body = students;
   }
 }
