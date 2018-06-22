@@ -92,6 +92,31 @@ class AnliCtr extends Controller {
     };
   }
 
+  async modifyAnli() {
+    const { content, openId, id, title } = this.ctx.request.body;
+    if (!openId) {
+      this.ctx.body = {
+        code: -1024,
+        data: 'no openId',
+      };
+      return;
+    }
+
+    this.ctx.model.Tyanlis.update({
+      content,
+      title,
+    }, {
+      where: {
+        id,
+      },
+    });
+
+    this.ctx.body = {
+      code: 0,
+      data: 'success',
+    };
+  }
+
 }
 
 module.exports = AnliCtr;

@@ -17,6 +17,7 @@ module.exports = app => {
   router.get('/user/goodsFavorite', controller.user.goodsFavorite);
   router.get('/user/goodsFavoriteDelete', controller.user.goodsFavoriteDelete);
   router.get('/likeAnli', controller.anlis.likeAnli);
+  router.get('/modifyAnli', controller.anlis.modifyAnli);
   router.get('/getTeachers', controller.teacher.index);
   router.get('/getStudents', controller.student.index);
 
