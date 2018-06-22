@@ -4,7 +4,7 @@
 
 module.exports = function(app) {
   const { STRING, INTEGER, TEXT } = app.Sequelize;
-  return app.model.define('tyAnlis', {
+  return app.model.define('tyBinglis', {
     id: {
       type: INTEGER(11).UNSIGNED,
       allowNull: false,
@@ -53,6 +53,6 @@ module.exports = function(app) {
       allowNull: true,
     },
   }, {
-    tableName: 'ty-anlis',
+    tableName: 'ty-binglis',
   });
 };

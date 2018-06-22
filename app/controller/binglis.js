@@ -2,22 +2,22 @@
 
 const Controller = require('egg').Controller;
 
-class AnliCtr extends Controller {
+class BingliCtr extends Controller {
   async index() {
     const { id, limit } = this.ctx.query;
     if (!id) {
       const searchObject = limit ? { limit: +limit } : {};
-      const newss = await this.ctx.model.Tyanlis.findAll(searchObject);
+      const newss = await this.ctx.model.Tybinglis.findAll(searchObject);
       this.ctx.body = newss;
     } else {
-      const singleNews = await this.ctx.model.Tyanlis.findOne({
+      const singleNews = await this.ctx.model.Tybinglis.findOne({
         where: {
           id,
         },
       });
       const olCreator = +singleNews.creator;
       const creator = String(olCreator + 1);
-      await this.ctx.model.Tyanlis.update({ creator }, {
+      await this.ctx.model.Tybinglis.update({ creator }, {
         where: {
           id,
         },
@@ -26,16 +26,16 @@ class AnliCtr extends Controller {
     }
   }
 
-  async reviewAnli() {
+  async reviewBingli() {
     const data = this.ctx.request.body;
-    const singleNews = await this.ctx.model.Tyanlis.findOne({
+    const singleNews = await this.ctx.model.Tybinglis.findOne({
       where: {
         id: data.id,
       },
     });
     singleNews.reviews = JSON.parse(singleNews.reviews);
     singleNews.reviews.push(data.review);
-    await this.ctx.model.Tyanlis.update({ reviews: JSON.stringify(singleNews.reviews) }, { where: {
+    await this.ctx.model.Tybinglis.update({ reviews: JSON.stringify(singleNews.reviews) }, { where: {
       id: data.id,
     } });
 
@@ -45,7 +45,7 @@ class AnliCtr extends Controller {
     };
   }
 
-  async likeAnli() {
+  async likeBingli() {
     const { id, openId } = this.ctx.query;
 
     const user = await this.ctx.model.Tyusers.findOne({
@@ -56,14 +56,14 @@ class AnliCtr extends Controller {
 
     const shoucang = JSON.parse(user.shoucang);
 
-    if (shoucang.anli.find(value => value == id) !== undefined) {
+    if (shoucang.bingli.find(value => value == id) !== undefined) {
       this.ctx.body = {
         code: -1024,
         status: '已收藏',
       };
       return;
     }
-    shoucang.anli.push(id);
+    shoucang.bingli.push(id);
 
     await this.ctx.model.Tyusers.update({ shoucang: JSON.stringify(shoucang) }, {
       where: {
@@ -72,7 +72,7 @@ class AnliCtr extends Controller {
     });
 
 
-    const singleNews = await this.ctx.model.Tyanlis.findOne({
+    const singleNews = await this.ctx.model.Tybinglis.findOne({
       where: {
         id,
       },
@@ -80,7 +80,7 @@ class AnliCtr extends Controller {
 
     singleNews.ups = +singleNews.ups + 1;
 
-    this.ctx.model.Tyanlis.update({ ups: String(singleNews.ups) }, {
+    this.ctx.model.Tybinglis.update({ ups: String(singleNews.ups) }, {
       where: {
         id,
       },
@@ -92,8 +92,8 @@ class AnliCtr extends Controller {
     };
   }
 
-  async modifyAnli() {
-    const { content, openId, id, title, author } = this.ctx.request.body;
+  async modifyBingli() {
+    const { content, openId, id, title } = this.ctx.request.body;
     if (!openId) {
       this.ctx.body = {
         code: -1024,
@@ -102,23 +102,19 @@ class AnliCtr extends Controller {
       return;
     }
 
-    if (id === 'undefined') {
-      const result = await this.ctx.model.Tyanlis.create({
+    if (!id) {
+      this.ctx.model.create({
         title,
         content,
-        openId,
-        reviews: '[]',
-        ups: 0,
-        author,
       });
       this.ctx.body = {
         code: 0,
-        data: result,
+        data: 'success',
       };
       return;
     }
 
-    this.ctx.model.Tyanlis.update({
+    this.ctx.model.Tybinglis.update({
       content,
       title,
     }, {
@@ -135,4 +131,4 @@ class AnliCtr extends Controller {
 
 }
 
-module.exports = AnliCtr;
+module.exports = BingliCtr;
