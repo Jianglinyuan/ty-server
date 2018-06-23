@@ -32,5 +32,16 @@ module.exports = appInfo => {
     domainWhiteList: [ 'http://siyan.tech', 'https://siyan.tech', 'http://photo.siyan.tech' ],
   };
 
+  config.qiniu = {
+    // I ussually set the key into `~/.zshrc`, and I can get the value via `process.env.key`, It's very safe~
+    ak: 'naEiwyfhSfMwmHgU1l-jaojDog2_dVdvrJCu6_jQ',
+    sk: 'PWKu2j9lqnZRxwY4jHjkZcz1gVrT7dLj37J0h4mf',
+    bucket: 'dogod',
+    baseUrl: 'http://photo.siyan.tech/',
+    zone: 'Zone_z0',
+    app: true, // default value
+    agent: false, // default value
+  };
+
   return config;
 };

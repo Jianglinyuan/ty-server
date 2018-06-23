@@ -31,4 +31,6 @@ module.exports = app => {
   router.post('/reviewBingli', controller.binglis.reviewBingli);
   router.post('/modifyAnli', controller.anlis.modifyAnli);
   router.post('/modifyBingli', controller.binglis.modifyBingli);
+
+  router.post('/upload', controller.upload.uploadImg);
 };

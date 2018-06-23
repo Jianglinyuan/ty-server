@@ -6,6 +6,9 @@
 exports.sequelize = {
   enable: true,
   package: 'egg-sequelize',
-}
-;
+};
 
+exports.qiniu = {
+  enable: true,
+  package: 'egg-qiniu-upload',
+};

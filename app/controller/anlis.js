@@ -102,7 +102,7 @@ class AnliCtr extends Controller {
       return;
     }
 
-    if (id === 'undefined') {
+    if (id === 'undefined' || !id) {
       const result = await this.ctx.model.Tyanlis.create({
         title,
         content,
