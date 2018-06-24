@@ -93,7 +93,7 @@ class AnliCtr extends Controller {
   }
 
   async modifyAnli() {
-    const { content, openId, id, title, author } = this.ctx.request.body;
+    const { content, openId, id, title, author, pic } = this.ctx.request.body;
     if (!openId) {
       this.ctx.body = {
         code: -1024,
@@ -110,6 +110,7 @@ class AnliCtr extends Controller {
         reviews: '[]',
         ups: 0,
         author,
+        pic,
       });
       this.ctx.body = {
         code: 0,
@@ -121,6 +122,7 @@ class AnliCtr extends Controller {
     this.ctx.model.Tyanlis.update({
       content,
       title,
+      pic,
     }, {
       where: {
         id,

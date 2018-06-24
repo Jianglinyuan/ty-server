@@ -25,7 +25,7 @@ module.exports = function(app) {
       allowNull: true,
     },
     reviews: {
-      type: STRING(1024),
+      type: TEXT('long'),
       allowNull: true,
     },
     price: {
