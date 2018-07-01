@@ -6,7 +6,11 @@
 module.exports = app => {
   const { router, controller } = app;
   router.get('/getBanner', controller.banner.index);
+
   router.get('/getBooks', controller.book.index);
+  router.post('/buyBook', controller.book.buy);
+  router.get('/getBuyRecored', controller.book.getBuyRecored);
+
   router.get('/getClass', controller.class.index);
   router.get('/getVerify', controller.verify.index);
   router.get('/getNews', controller.news.index);
@@ -33,4 +37,6 @@ module.exports = app => {
   router.post('/modifyBingli', controller.binglis.modifyBingli);
 
   router.post('/upload', controller.upload.uploadImg);
+  router.post('/submitForm', controller.form.submit);
+
 };

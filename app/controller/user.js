@@ -138,33 +138,7 @@ class UserCtr extends Controller {
 
   async modifyYanzhi() {
     const { openId, number, title } = this.ctx.request.body;
-    const currentUser = await this.ctx.model.Tyusers.findOne({
-      where: {
-        uid: openId
-      }
-    });
-
-    if (!currentUser) {
-      this.ctx.body = {
-        code: -1024,
-        data: "并不存在这个用户"
-      };
-      return;
-    }
-
-    const total = currentUser.yanzhi + number;
-
-    await this.ctx.service.recodeyz.record(openId, title, number, total);
-
-    await this.ctx.model.Tyusers.update(
-      { yanzhi: total },
-      {
-        where: {
-          uid: openId
-        }
-      }
-    );
-
+    await this.ctx.service.recodeyz.modifyYanzhi(openId, number, title);
     this.ctx.body = {
       code: 0,
       data: "success"

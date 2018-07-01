@@ -33,8 +33,12 @@ module.exports = function(app) {
       allowNull: true,
       field: 'time',
     },
+    class: {
+      type: STRING(1024),
+      allowNull: true,
+      field: 'time',
+    },
   }, {
     tableName: 'ty-indexform',
-    timestamps: false,
   });
 };

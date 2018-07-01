@@ -17,6 +17,11 @@ module.exports = appInfo => {
     username: 'root',
     password: 'Jly921027.',
     timestamps: false,
+    timezone: '+08:00',
+    dialectOptions: {
+      dateStrings: true, // 禁止mysql的转换
+      typeCast: true, // 覆盖了sequelize的转换，看代码，目前只影响date和GEOMETRY，能用 reading from database
+    },
   };
 
   config.cluster = {
