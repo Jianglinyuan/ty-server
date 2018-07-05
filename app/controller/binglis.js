@@ -4,9 +4,14 @@ const Controller = require('egg').Controller;
 
 class BingliCtr extends Controller {
   async index() {
-    const { id, limit } = this.ctx.query;
+    const { id, limit, user } = this.ctx.query;
     if (!id) {
       const searchObject = limit ? { limit: +limit } : {};
+      if (user) {
+        searchObject.where = {
+          openId: user,
+        };
+      }
       const newss = await this.ctx.model.Tybinglis.findAll(searchObject);
       this.ctx.body = newss;
     } else {

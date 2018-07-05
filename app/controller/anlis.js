@@ -4,9 +4,28 @@ const Controller = require('egg').Controller;
 
 class AnliCtr extends Controller {
   async index() {
-    const { id, limit } = this.ctx.query;
+    const { id, limit, user, isShoucang } = this.ctx.query;
+
+    if (isShoucang) {
+      const userInfo = await this.service.user.getUser(user);
+      const userShoucang = JSON.parse(userInfo.shoucang);
+      const anli = userShoucang.anli.map(item => +item);
+      const anlis = await this.ctx.model.Tyanlis.findAll({
+        where: {
+          id: anli,
+        },
+      });
+      this.ctx.body = anlis;
+      return;
+    }
+
     if (!id) {
       const searchObject = limit ? { limit: +limit } : {};
+      if (user) {
+        searchObject.where = {
+          openId: user,
+        };
+      }
       const newss = await this.ctx.model.Tyanlis.findAll(searchObject);
       this.ctx.body = newss;
     } else {
